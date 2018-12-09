@@ -1,0 +1,35 @@
+package(default_visibility = ["//visibility:public"])
+
+config_setting(
+    name = "darwin_amd64",
+    constraint_values = [
+        "@bazel_tools//platforms:osx",
+        "@bazel_tools//platforms:x86_64",
+    ]
+)
+
+config_setting(
+    name = "linux_amd64",
+    constraint_values = [
+        "@bazel_tools//platforms:linux",
+        "@bazel_tools//platforms:x86_64",
+    ]
+)
+
+config_setting(
+    name = "windows_amd64",
+    constraint_values = [
+        "@bazel_tools//platforms:windows",
+        "@bazel_tools//platforms:x86_64",
+    ]
+)
+
+filegroup(
+    name = "server",
+    srcs = select({
+        ":darwin_amd64": ["devserver-darwin_amd64"],
+        ":linux_amd64": ["devserver-linux_amd64"],
+        ":windows_amd64": ["devserver-windows_amd64.exe"],
+    })
+)
+
