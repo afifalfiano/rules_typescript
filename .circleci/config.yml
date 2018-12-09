@@ -26,6 +26,16 @@ var_4: &hide_node_and_yarn_local_binaries
       sudo mv /usr/local/bin/npm /usr/local/bin/npm_
       sudo mv /usr/local/bin/yarn /usr/local/bin/yarn_
 
+var_5: &produce_devserver_binaries
+  run:
+    command: |
+      bazel build --platforms=@io_bazel_rules_go//go/toolchain:linux_amd64 //devserver:devserver
+      bazel build --platforms=@io_bazel_rules_go//go/toolchain:darwin_amd64 //devserver:devserver
+      bazel build --platforms=@io_bazel_rules_go//go/toolchain:windows_amd64 //devserver:devserver
+      cp bazel-bin/devserver/darwin_amd64_pure_stripped/devserver devserver_binaries/devserver-darwin_amd64
+      cp bazel-bin/devserver/linux_amd64_stripped/devserver devserver_binaries/devserver-linux_amd64
+      cp bazel-bin/devserver/windows_amd64_pure_stripped/devserver.exe devserver_binaries/devserver-windows_amd64.exe
+
 # Settings common to each job
 anchor_1: &job_defaults
   working_directory: ~/ts
@@ -50,6 +60,7 @@ jobs:
       - run: sudo cp .circleci/bazel.rc /etc/bazel.bazelrc
       - *setup-bazel-remote-cache
       - *hide_node_and_yarn_local_binaries
+      - *produce_devserver_binaries
 
       - restore_cache:
           key: *cache_key
@@ -69,6 +80,7 @@ jobs:
       - run: sudo cp .circleci/bazel.rc /etc/bazel.bazelrc
       - *setup-bazel-remote-cache
       - *hide_node_and_yarn_local_binaries
+      - *produce_devserver_binaries
 
       - restore_cache:
           key: *cache_key

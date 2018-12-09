@@ -7,3 +7,6 @@ node_modules
 
 internal/e2e/ts_auto_deps/simple/BUILD
 internal/e2e/ts_auto_deps/simple/BUILD.bazel
+
+devserver_binaries/devserver*
+

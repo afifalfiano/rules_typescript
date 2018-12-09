@@ -51,6 +51,13 @@ def rules_typescript_dependencies():
         sha256 = "a13af63e928c34eff428d47d31bafeec4e38ee9b6940e70bf2c9cd47184c5c16",
     )
 
+    _maybe(
+        http_archive,
+        name = "go_devserver",
+        urls = ["https://github.com/bazelbuild/rules_typescript/releases/download/%s/devserver_binaries.zip" % VERSION],
+        strip_prefix = "devserver_binaries",
+    )
+
     # ts_devserver depends on the Go rules.
     # See https://github.com/bazelbuild/rules_go#setup for the latest version.
     _maybe(
